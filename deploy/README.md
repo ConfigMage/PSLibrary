@@ -140,15 +140,54 @@ If you get permission errors, either:
    pip3 install --user -r requirements.txt
    ```
 
-## Creating a Portable Bundle
+## Creating a Standalone EXE (Windows)
 
-To create a portable version that doesn't require Python installation:
+To create a single-file executable that doesn't require Python installation:
 
 ```bash
-# Windows
-deploy\create_bundle_windows.bat
+# Navigate to deploy folder
+cd deploy
 
-# Linux/macOS
+# Run the bundle creator
+create_bundle_windows.bat
+```
+
+This will create:
+- `PSLibrary.exe` - Single-file executable
+- `SIGNING_INSTRUCTIONS.txt` - Instructions for code signing
+
+### Code Signing the EXE
+
+To avoid "Unknown Publisher" warnings, sign the EXE with a code signing certificate:
+
+1. **Find your certificate thumbprint**:
+   - Open `certmgr.msc`
+   - Navigate to Personal → Certificates
+   - Find your code signing certificate
+   - Double-click → Details → Thumbprint
+
+2. **Sign the EXE**:
+   ```cmd
+   signtool sign /sha1 "YourThumbprint" /t http://timestamp.digicert.com /fd sha256 PSLibrary.exe
+   ```
+
+3. **Verify the signature**:
+   ```cmd
+   signtool verify /pa PSLibrary.exe
+   ```
+
+**Note**: `signtool.exe` comes with Windows SDK or Visual Studio.
+
+### Distribution
+
+After signing:
+1. Delete `SIGNING_INSTRUCTIONS.txt` 
+2. The signed `PSLibrary.exe` is ready for distribution
+3. Users can run it directly - no installation needed!
+
+## Creating a Portable Bundle (Linux/macOS)
+
+```bash
 ./deploy/create_bundle_unix.sh
 ```
 
@@ -161,18 +200,25 @@ This will create a `PSLibrary_Portable` folder with everything needed to run the
   - Smaller download (~10MB)
   - For developers or technical users
   
-- **Bundles** (created by `create_bundle_*.bat/sh`):
+- **Single-File EXE** (Windows only):
+  - Includes Python and all dependencies
+  - One file (~40-50MB)
+  - Can be code signed
+  - For end users who want simplicity
+
+- **Portable Bundle** (Linux/macOS):
   - Include Python and all dependencies
   - Larger size (~100-150MB)
-  - No installation required
-  - For end users who just want to run the app
+  - Folder structure
+  - For end users on non-Windows platforms
 
 See `BUNDLE_GUIDE.md` for detailed bundle creation and distribution instructions.
 
 ## Configuration
 
 The application stores its data in:
-- **Database**: `script_library.db` in the application directory
+- **Database**: `script_library.db` in the application directory (when run from source)
+- **Database**: User's AppData folder (when run as single-file EXE)
 - **Settings**: User's home directory under `.scriptlibrary/`
 
 ## Updating

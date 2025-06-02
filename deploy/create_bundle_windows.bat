@@ -1,7 +1,7 @@
 @echo off
-title PowerShell Script Library - Bundle Creator
+title PowerShell Script Library - EXE Creator
 echo ===========================================================
-echo Creating Portable Bundle for PowerShell Script Library
+echo Creating Single-File EXE for PowerShell Script Library
 echo ===========================================================
 echo.
 
@@ -33,10 +33,10 @@ REM Clean previous builds
 echo Cleaning previous builds...
 if exist "build" rmdir /s /q "build"
 if exist "dist" rmdir /s /q "dist"
-if exist "PSLibrary_Portable" rmdir /s /q "PSLibrary_Portable"
+if exist "PSLibrary.exe" del /f /q "PSLibrary.exe"
 
-REM Create spec file for PyInstaller
-echo Creating PyInstaller spec file...
+REM Create spec file for PyInstaller (single-file)
+echo Creating PyInstaller spec file for single-file EXE...
 (
 echo # -*- mode: python ; coding: utf-8 -*-
 echo.
@@ -48,8 +48,6 @@ echo     pathex=[],
 echo     binaries=[],
 echo     datas=[
 echo         ^('resources', 'resources'^),
-echo         ^('README.md', '.'^),
-echo         ^('requirements.txt', '.'^),
 echo     ],
 echo     hiddenimports=[
 echo         'PyQt6.QtCore',
@@ -77,13 +75,17 @@ echo.
 echo exe = EXE(
 echo     pyz,
 echo     a.scripts,
+echo     a.binaries,
+echo     a.zipfiles,
+echo     a.datas,
 echo     [],
-echo     exclude_binaries=True,
-echo     name='PowerShellScriptLibrary',
+echo     name='PSLibrary',
 echo     debug=False,
 echo     bootloader_ignore_signals=False,
 echo     strip=False,
 echo     upx=True,
+echo     upx_exclude=[],
+echo     runtime_tmpdir=None,
 echo     console=False,
 echo     disable_windowed_traceback=False,
 echo     argv_emulation=False,
@@ -92,24 +94,13 @@ echo     codesign_identity=None,
 echo     entitlements_file=None,
 echo     icon='resources/app.ico' if os.path.exists^('resources/app.ico'^) else None,
 echo ^)
-echo.
-echo coll = COLLECT(
-echo     exe,
-echo     a.binaries,
-echo     a.zipfiles,
-echo     a.datas,
-echo     strip=False,
-echo     upx=True,
-echo     upx_exclude=[],
-echo     name='PowerShellScriptLibrary',
-echo ^)
 ) > PSLibrary.spec
 
 REM Build the application
 echo.
-echo Building portable application...
+echo Building single-file EXE...
 echo This may take several minutes...
-python -m PyInstaller PSLibrary.spec --clean
+python -m PyInstaller PSLibrary.spec --clean --onefile
 
 if errorlevel 1 (
     echo.
@@ -118,32 +109,46 @@ if errorlevel 1 (
     exit /b 1
 )
 
-REM Create portable folder structure
+REM Move the exe to parent directory
 echo.
-echo Creating portable bundle...
-mkdir PSLibrary_Portable
-xcopy /E /I /Y dist\PowerShellScriptLibrary PSLibrary_Portable\
+echo Moving EXE to project root...
+move dist\PSLibrary.exe . >nul
 
-REM Create run script for portable version
-echo @echo off > PSLibrary_Portable\run.bat
-echo cd /d "%%~dp0" >> PSLibrary_Portable\run.bat
-echo start PowerShellScriptLibrary.exe >> PSLibrary_Portable\run.bat
-
-REM Create readme for portable version
+REM Create signing instructions
+echo Creating signing instructions...
 (
-echo PowerShell Script Library - Portable Version
-echo ==========================================
+echo CODE SIGNING INSTRUCTIONS
+echo ========================
 echo.
-echo This is a portable version that includes all dependencies.
-echo No installation required!
+echo The PSLibrary.exe has been created but is NOT YET SIGNED.
+echo To sign the executable with your code signing certificate:
 echo.
-echo To run: Double-click run.bat or PowerShellScriptLibrary.exe
+echo 1. Open Command Prompt as Administrator
 echo.
-echo Note: Windows Defender may flag the executable on first run.
-echo This is normal for PyInstaller applications.
+echo 2. Navigate to the folder containing PSLibrary.exe
 echo.
-echo Your scripts database will be created in this folder.
-) > PSLibrary_Portable\README.txt
+echo 3. Use one of these commands depending on how your certificate is stored:
+echo.
+echo    If using certificate from Windows Certificate Store by name:
+echo    signtool sign /n "Your Certificate Subject Name" /t http://timestamp.digicert.com /fd sha256 PSLibrary.exe
+echo.
+echo    If using certificate from Windows Certificate Store by thumbprint:
+echo    signtool sign /sha1 "YourCertThumbprint" /t http://timestamp.digicert.com /fd sha256 PSLibrary.exe
+echo.
+echo    If using a PFX file:
+echo    signtool sign /f "path\to\your\certificate.pfx" /p "password" /t http://timestamp.digicert.com /fd sha256 PSLibrary.exe
+echo.
+echo 4. Verify the signature:
+echo    signtool verify /pa PSLibrary.exe
+echo.
+echo NOTES:
+echo - signtool.exe comes with Windows SDK or Visual Studio
+echo - The timestamp server ensures the signature remains valid after cert expiration
+echo - /fd sha256 uses SHA-256 for the file digest ^(recommended^)
+echo - You can find your certificate thumbprint in certmgr.msc
+echo.
+echo After signing, the EXE will show your publisher name instead of "Unknown Publisher"
+) > SIGNING_INSTRUCTIONS.txt
 
 REM Clean up build files
 echo.
@@ -154,18 +159,24 @@ del PSLibrary.spec
 
 echo.
 echo ===========================================================
-echo Portable Bundle Created Successfully!
+echo Single-File EXE Created Successfully!
 echo ===========================================================
 echo.
-echo Location: %CD%\PSLibrary_Portable
+echo Location: %CD%\PSLibrary.exe
+echo Size: 
+dir PSLibrary.exe | find "PSLibrary.exe"
 echo.
-echo The portable version includes:
+echo IMPORTANT: The EXE is NOT signed yet!
+echo.
+echo To sign the executable:
+echo 1. Read SIGNING_INSTRUCTIONS.txt for detailed steps
+echo 2. Use signtool with your certificate thumbprint
+echo 3. After signing, delete SIGNING_INSTRUCTIONS.txt before distribution
+echo.
+echo The single-file EXE includes:
 echo - All Python dependencies
-echo - PyQt6 libraries
+echo - PyQt6 libraries  
 echo - No installation required
-echo.
-echo To distribute:
-echo 1. Zip the PSLibrary_Portable folder
-echo 2. Users can extract and run anywhere
+echo - Database will be created in user's AppData folder
 echo.
 pause
