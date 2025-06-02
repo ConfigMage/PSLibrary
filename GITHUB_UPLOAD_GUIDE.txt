@@ -1,0 +1,193 @@
+================================
+GITHUB UPLOAD INSTRUCTIONS
+For PowerShell Script Library
+================================
+
+INITIAL SETUP (First Time Only)
+===============================
+
+1. Create a GitHub Repository:
+   - Go to https://github.com/new
+   - Repository name: PSLibrary (or your preferred name)
+   - Description: "PowerShell and Batch Script Library Manager with VS Code-inspired GUI"
+   - Set to Public (or Private if preferred)
+   - DON'T initialize with README (you already have one)
+   - Click "Create repository"
+
+2. Prepare Your Local Repository:
+   cd C:\Project\PY\PSLibrary
+   git init
+   
+3. Create .gitignore File:
+   Create a file named '.gitignore' with this content:
+   
+   # Python
+   __pycache__/
+   *.py[cod]
+   *$py.class
+   *.so
+   .Python
+   env/
+   venv/
+   ENV/
+   
+   # PyInstaller
+   build/
+   dist/
+   *.spec
+   PSLibrary_Portable/
+   
+   # Database
+   *.db
+   *.db-journal
+   
+   # IDE
+   .vscode/
+   .idea/
+   *.swp
+   *.swo
+   
+   # OS
+   .DS_Store
+   Thumbs.db
+   
+   # Logs
+   *.log
+
+4. Initial Commit and Push:
+   git add .
+   git commit -m "Initial commit - PowerShell Script Library"
+   git branch -M main
+   git remote add origin https://github.com/YOUR_USERNAME/PSLibrary.git
+   git push -u origin main
+
+CREATING A RELEASE
+==================
+
+1. Update Version (optional):
+   - Edit any version numbers in your code
+   - Commit changes
+
+2. Create and Push a Tag:
+   git tag -a v1.0.0 -m "First release of PowerShell Script Library"
+   git push origin v1.0.0
+
+3. Create GitHub Release:
+   - Go to your repository on GitHub
+   - Click "Releases" → "Create a new release"
+   - Choose your tag (v1.0.0)
+   - Release title: "PSLibrary v1.0.0"
+   - Description: Add features, installation instructions
+   - Attach files (optional):
+     * Create a ZIP of your source code
+     * Create portable bundle and upload PSLibrary_Portable.zip
+
+RECOMMENDED RELEASE DESCRIPTION
+===============================
+
+## PowerShell Script Library v1.0.0
+
+A modern script management tool with VS Code-inspired interface for organizing PowerShell and Batch scripts.
+
+### Features
+- 📁 Hierarchical folder organization
+- 🎨 Syntax highlighting for PowerShell and Batch files
+- 🔍 Full-text search across all scripts
+- 🌙 VS Code-inspired dark theme
+- 💾 Local SQLite database storage
+- 🖱️ Drag & drop file organization
+
+### Installation
+
+#### Option 1: From Source (Developers)
+1. Clone the repository
+2. Run `deploy/install_windows.bat` (Windows) or `deploy/install_unix.sh` (Linux/Mac)
+
+#### Option 2: Portable Version (End Users)
+1. Download PSLibrary_Portable.zip from releases
+2. Extract to any folder
+3. Run PSLibrary.exe (no installation needed)
+
+### Requirements
+- Python 3.10+ (for source installation)
+- Windows 10/11, macOS 11+, or Linux
+- 200MB free space
+
+REGULAR UPDATES
+===============
+
+1. Make Your Changes
+2. Commit and Push:
+   git add .
+   git commit -m "Description of changes"
+   git push
+
+3. For New Releases:
+   git tag -a v1.1.0 -m "Version 1.1.0 - Added feature X"
+   git push origin v1.1.0
+   Then create release on GitHub
+
+CREATING PORTABLE RELEASES
+==========================
+
+Before uploading a new release:
+
+1. Create Windows Portable Bundle:
+   deploy\create_bundle_windows.bat
+   
+2. Zip the Result:
+   - Right-click PSLibrary_Portable folder
+   - Send to → Compressed folder
+   - Rename to: PSLibrary_Portable_Windows_v1.0.0.zip
+
+3. Upload to Release:
+   - Go to Releases → Edit release
+   - Drag the ZIP file to attachments
+
+BEST PRACTICES
+==============
+
+1. Always test before pushing:
+   python main.py
+   python check_installation.py
+
+2. Update README.md with:
+   - Screenshots (create 'screenshots' folder)
+   - Clear installation instructions
+   - Feature list
+   - Requirements
+
+3. Use meaningful commit messages:
+   ✓ "Added collapsible folder tree navigation"
+   ✗ "Updated files"
+
+4. Tag versions semantically:
+   - v1.0.0 - Major release
+   - v1.1.0 - New features
+   - v1.1.1 - Bug fixes
+
+5. Create issues for tracking:
+   - Bug reports
+   - Feature requests
+   - Documentation needs
+
+GITHUB PAGES (Optional)
+=======================
+
+Create a simple website for your project:
+
+1. Go to Settings → Pages
+2. Source: Deploy from branch
+3. Branch: main, folder: /docs
+4. Create docs/index.html with project info
+
+COLLABORATION
+=============
+
+If others want to contribute:
+
+1. Go to Settings → Manage access
+2. Add collaborators
+3. Or accept Pull Requests from forks
+
+Good luck with your project!
