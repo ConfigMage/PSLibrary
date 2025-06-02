@@ -93,7 +93,7 @@ A modern script management tool with VS Code-inspired interface for organizing P
 - 📁 Hierarchical folder organization
 - 🎨 Syntax highlighting for PowerShell and Batch files
 - 🔍 Full-text search across all scripts
-- 🌙 VS Code-inspired dark theme
+- 🌙 VS Code-inspired dark theme (fixed theme, no light mode)
 - 💾 Local SQLite database storage
 - 🖱️ Drag & drop file organization
 

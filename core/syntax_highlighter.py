@@ -95,41 +95,49 @@ class PowerShellHighlighter(QsciLexerCustom):
                 i += 1
     
     def setup_styles(self):
-        # VS Code PowerShell theme colors
+        # VS Code PowerShell dark theme colors
         self.setDefaultPaper(QColor("#1e1e1e"))
         self.setDefaultColor(QColor("#d4d4d4"))
         
         # Style 0: Default
         self.setColor(QColor("#d4d4d4"), 0)
         self.setFont(QFont("Consolas", 10), 0)
+        self.setPaper(QColor("#1e1e1e"), 0)
         
         # Style 1: Comment
         self.setColor(QColor("#6a9955"), 1)
         self.setFont(QFont("Consolas", 10), 1)
+        self.setPaper(QColor("#1e1e1e"), 1)
         
         # Style 2: String
         self.setColor(QColor("#ce9178"), 2)
         self.setFont(QFont("Consolas", 10), 2)
+        self.setPaper(QColor("#1e1e1e"), 2)
         
         # Style 3: Keyword
         self.setColor(QColor("#569cd6"), 3)
         self.setFont(QFont("Consolas", 10, QFont.Weight.Bold), 3)
+        self.setPaper(QColor("#1e1e1e"), 3)
         
         # Style 4: Variable
         self.setColor(QColor("#9cdcfe"), 4)
         self.setFont(QFont("Consolas", 10), 4)
+        self.setPaper(QColor("#1e1e1e"), 4)
         
         # Style 5: Number
         self.setColor(QColor("#b5cea8"), 5)
         self.setFont(QFont("Consolas", 10), 5)
+        self.setPaper(QColor("#1e1e1e"), 5)
         
         # Style 6: Operator
         self.setColor(QColor("#d4d4d4"), 6)
         self.setFont(QFont("Consolas", 10), 6)
+        self.setPaper(QColor("#1e1e1e"), 6)
         
         # Style 7: Cmdlet
         self.setColor(QColor("#dcdcaa"), 7)
         self.setFont(QFont("Consolas", 10), 7)
+        self.setPaper(QColor("#1e1e1e"), 7)
 
 
 class BatchHighlighter(QsciLexerBatch):
@@ -138,25 +146,30 @@ class BatchHighlighter(QsciLexerBatch):
         self.setup_colors()
     
     def setup_colors(self):
-        # VS Code Batch theme colors
+        # VS Code Batch dark theme colors
         self.setDefaultPaper(QColor("#1e1e1e"))
         self.setDefaultColor(QColor("#d4d4d4"))
         
         # Keywords
         self.setColor(QColor("#569cd6"), QsciLexerBatch.Keyword)
         self.setFont(QFont("Consolas", 10, QFont.Weight.Bold), QsciLexerBatch.Keyword)
+        self.setPaper(QColor("#1e1e1e"), QsciLexerBatch.Keyword)
         
         # Comments
         self.setColor(QColor("#6a9955"), QsciLexerBatch.Comment)
+        self.setPaper(QColor("#1e1e1e"), QsciLexerBatch.Comment)
         
         # Labels
         self.setColor(QColor("#dcdcaa"), QsciLexerBatch.Label)
+        self.setPaper(QColor("#1e1e1e"), QsciLexerBatch.Label)
         
         # Variables
         self.setColor(QColor("#9cdcfe"), QsciLexerBatch.Variable)
+        self.setPaper(QColor("#1e1e1e"), QsciLexerBatch.Variable)
         
         # Operators
         self.setColor(QColor("#d4d4d4"), QsciLexerBatch.Operator)
+        self.setPaper(QColor("#1e1e1e"), QsciLexerBatch.Operator)
 
 
 class SyntaxHighlighterFactory:

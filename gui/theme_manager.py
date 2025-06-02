@@ -170,8 +170,13 @@ class Theme:
         editor.setMarginsBackgroundColor(QColor(self.colors['editor_margin_bg']))
         editor.setMarginsForegroundColor(QColor(self.colors['editor_margin_fg']))
         
-        # Update paper and default colors
+        # Update paper and default colors for the entire editor
         editor.setPaper(QColor(self.colors['editor_bg']))
+        editor.setColor(QColor(self.colors['text']))
+        
+        # Set colors for all styles (0-127)
+        for style in range(128):
+            editor.setPaper(QColor(self.colors['editor_bg']), style)
         
         # Update lexer colors if available
         lexer = editor.lexer()
@@ -182,82 +187,39 @@ class Theme:
 
 class ThemeManager:
     def __init__(self):
-        self.themes = {
-            "dark": Theme(
-                name="dark",
-                colors={
-                    "background": "#1e1e1e",
-                    "text": "#d4d4d4",
-                    "sidebar": "#252526",
-                    "editor_bg": "#1e1e1e",
-                    "selection": "#094771",
-                    "hover": "#2a2d2e",
-                    "border": "#464647",
-                    "tab_bar": "#2d2d30",
-                    "tab_active": "#1e1e1e",
-                    "tab_inactive": "#2d2d30",
-                    "input_bg": "#3c3c3c",
-                    "readonly_bg": "#2d2d30",
-                    "readonly_text": "#969696",
-                    "button_bg": "#0e639c",
-                    "button_text": "#ffffff",
-                    "button_hover": "#1177bb",
-                    "button_pressed": "#094771",
-                    "accent": "#007acc",
-                    "menubar": "#3c3c3c",
-                    "menu_bg": "#252526",
-                    "toolbar": "#2d2d30",
-                    "statusbar": "#007acc",
-                    "scrollbar_bg": "#1e1e1e",
-                    "scrollbar_handle": "#464647",
-                    "scrollbar_hover": "#5a5a5a",
-                    "editor_line_highlight": "#2a2a2a",
-                    "editor_margin_bg": "#2b2b2b",
-                    "editor_margin_fg": "#858585"
-                }
-            ),
-            "light": Theme(
-                name="light",
-                colors={
-                    "background": "#ffffff",
-                    "text": "#333333",
-                    "sidebar": "#f3f3f3",
-                    "editor_bg": "#ffffff",
-                    "selection": "#add6ff",
-                    "hover": "#e8e8e8",
-                    "border": "#e5e5e5",
-                    "tab_bar": "#ececec",
-                    "tab_active": "#ffffff",
-                    "tab_inactive": "#ececec",
-                    "input_bg": "#ffffff",
-                    "readonly_bg": "#f3f3f3",
-                    "readonly_text": "#6e6e6e",
-                    "button_bg": "#007acc",
-                    "button_text": "#ffffff",
-                    "button_hover": "#005a9e",
-                    "button_pressed": "#004578",
-                    "accent": "#007acc",
-                    "menubar": "#f3f3f3",
-                    "menu_bg": "#ffffff",
-                    "toolbar": "#f3f3f3",
-                    "statusbar": "#007acc",
-                    "scrollbar_bg": "#f3f3f3",
-                    "scrollbar_handle": "#c1c1c1",
-                    "scrollbar_hover": "#a8a8a8",
-                    "editor_line_highlight": "#f5f5f5",
-                    "editor_margin_bg": "#f8f8f8",
-                    "editor_margin_fg": "#6e7681"
-                }
-            )
-        }
-        self.current_theme = "dark"
-        
-    def get_theme(self, name: str) -> Theme:
-        return self.themes.get(name, self.themes["dark"])
+        self.dark_theme = Theme(
+            name="dark",
+            colors={
+                "background": "#1e1e1e",
+                "text": "#d4d4d4",
+                "sidebar": "#252526",
+                "editor_bg": "#1e1e1e",
+                "selection": "#094771",
+                "hover": "#2a2d2e",
+                "border": "#464647",
+                "tab_bar": "#2d2d30",
+                "tab_active": "#1e1e1e",
+                "tab_inactive": "#2d2d30",
+                "input_bg": "#3c3c3c",
+                "readonly_bg": "#2d2d30",
+                "readonly_text": "#969696",
+                "button_bg": "#0e639c",
+                "button_text": "#ffffff",
+                "button_hover": "#1177bb",
+                "button_pressed": "#094771",
+                "accent": "#007acc",
+                "menubar": "#3c3c3c",
+                "menu_bg": "#252526",
+                "toolbar": "#2d2d30",
+                "statusbar": "#007acc",
+                "scrollbar_bg": "#1e1e1e",
+                "scrollbar_handle": "#464647",
+                "scrollbar_hover": "#5a5a5a",
+                "editor_line_highlight": "#2a2a2a",
+                "editor_margin_bg": "#2b2b2b",
+                "editor_margin_fg": "#858585"
+            }
+        )
         
     def get_current_theme(self) -> Theme:
-        return self.get_theme(self.current_theme)
-        
-    def set_theme(self, name: str):
-        if name in self.themes:
-            self.current_theme = name
+        return self.dark_theme

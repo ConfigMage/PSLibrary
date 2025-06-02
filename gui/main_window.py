@@ -129,17 +129,7 @@ class MainWindow(QMainWindow):
         self.toggle_properties_action.setChecked(True)
         view_menu.addAction(self.toggle_properties_action)
         
-        view_menu.addSeparator()
-        
-        self.theme_menu = view_menu.addMenu("&Theme")
-        self.dark_theme_action = QAction("&Dark", self)
-        self.dark_theme_action.setCheckable(True)
-        self.dark_theme_action.setChecked(True)
-        self.theme_menu.addAction(self.dark_theme_action)
-        
-        self.light_theme_action = QAction("&Light", self)
-        self.light_theme_action.setCheckable(True)
-        self.theme_menu.addAction(self.light_theme_action)
+        # Theme is fixed to dark mode
         
     def setup_toolbar(self):
         toolbar = QToolBar("Main Toolbar")
@@ -181,8 +171,7 @@ class MainWindow(QMainWindow):
         # View menu actions
         self.toggle_folder_tree_action.toggled.connect(self.toggle_folder_tree)
         self.toggle_properties_action.toggled.connect(self.toggle_properties_panel)
-        self.dark_theme_action.triggered.connect(lambda: self.change_theme("dark"))
-        self.light_theme_action.triggered.connect(lambda: self.change_theme("light"))
+        # No theme switching - dark mode only
         
         # Folder tree signals
         self.folder_tree.script_selected.connect(self.open_script)
@@ -228,12 +217,7 @@ class MainWindow(QMainWindow):
     def toggle_properties_panel(self, checked):
         self.properties_panel.setVisible(checked)
         
-    def change_theme(self, theme_name):
-        self.theme_manager.set_theme(theme_name)
-        self.apply_theme()
-        self.dark_theme_action.setChecked(theme_name == "dark")
-        self.light_theme_action.setChecked(theme_name == "light")
-        
+    
     def apply_theme(self):
         theme = self.theme_manager.get_current_theme()
         self.setStyleSheet(theme.get_app_stylesheet())
