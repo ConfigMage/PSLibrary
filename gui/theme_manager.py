@@ -191,7 +191,7 @@ class ThemeManager:
             name="dark",
             colors={
                 "background": "#1e1e1e",
-                "text": "#d4d4d4",
+                "text": "#ffffff",
                 "sidebar": "#252526",
                 "editor_bg": "#1e1e1e",
                 "selection": "#094771",

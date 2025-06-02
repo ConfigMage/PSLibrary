@@ -97,10 +97,10 @@ class PowerShellHighlighter(QsciLexerCustom):
     def setup_styles(self):
         # VS Code PowerShell dark theme colors
         self.setDefaultPaper(QColor("#1e1e1e"))
-        self.setDefaultColor(QColor("#d4d4d4"))
+        self.setDefaultColor(QColor("#ffffff"))
         
         # Style 0: Default
-        self.setColor(QColor("#d4d4d4"), 0)
+        self.setColor(QColor("#ffffff"), 0)
         self.setFont(QFont("Consolas", 10), 0)
         self.setPaper(QColor("#1e1e1e"), 0)
         
@@ -130,7 +130,7 @@ class PowerShellHighlighter(QsciLexerCustom):
         self.setPaper(QColor("#1e1e1e"), 5)
         
         # Style 6: Operator
-        self.setColor(QColor("#d4d4d4"), 6)
+        self.setColor(QColor("#ffffff"), 6)
         self.setFont(QFont("Consolas", 10), 6)
         self.setPaper(QColor("#1e1e1e"), 6)
         
@@ -148,7 +148,7 @@ class BatchHighlighter(QsciLexerBatch):
     def setup_colors(self):
         # VS Code Batch dark theme colors
         self.setDefaultPaper(QColor("#1e1e1e"))
-        self.setDefaultColor(QColor("#d4d4d4"))
+        self.setDefaultColor(QColor("#ffffff"))
         
         # Keywords
         self.setColor(QColor("#569cd6"), QsciLexerBatch.Keyword)
@@ -168,7 +168,7 @@ class BatchHighlighter(QsciLexerBatch):
         self.setPaper(QColor("#1e1e1e"), QsciLexerBatch.Variable)
         
         # Operators
-        self.setColor(QColor("#d4d4d4"), QsciLexerBatch.Operator)
+        self.setColor(QColor("#ffffff"), QsciLexerBatch.Operator)
         self.setPaper(QColor("#1e1e1e"), QsciLexerBatch.Operator)
 
 

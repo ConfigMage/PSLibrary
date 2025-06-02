@@ -23,6 +23,10 @@ class ScriptEditor(QsciScintilla):
         self.setUtf8(True)
         self.setFont(QFont("Consolas", 10))
         
+        # Set default colors
+        self.setPaper(QColor("#1e1e1e"))
+        self.setColor(QColor("#ffffff"))
+        
         # Line numbers
         self.setMarginType(0, QsciScintilla.MarginType.NumberMargin)
         self.setMarginWidth(0, "0000")
